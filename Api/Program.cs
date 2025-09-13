@@ -1,4 +1,5 @@
 using Api.Data;
+using Api.Extensions;
 using Microsoft.EntityFrameworkCore;
 using StackExchange.Redis;
 
@@ -19,6 +20,7 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+    app.ApplyMigrations();
 }
 
 app.UseHttpsRedirection();
