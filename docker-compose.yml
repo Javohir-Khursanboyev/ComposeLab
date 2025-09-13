@@ -1,6 +1,25 @@
 services:
   api:
     image: ${DOCKER_REGISTRY-}api
+    container_name: composeLab_api
     build:
       context: .
       dockerfile: Api/Dockerfile
+    ports:
+     - "5192:5192"
+     - "7085:7085" 
+
+  database:
+    image: postgres:latest
+    container_name: composeLab_database
+    environment:
+        POSTGRES_DB: composelab
+        POSTGRES_USER: postgres
+        POSTGRES_PASSWORD: root
+    volumes:
+     - db_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+volumes:   
+  db_data:
