@@ -49,7 +49,7 @@ namespace Api.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("AssetId")
+                    b.Property<int?>("AssetId")
                         .HasColumnType("integer");
 
                     b.Property<string>("Email")
@@ -75,9 +75,7 @@ namespace Api.Migrations
                 {
                     b.HasOne("Api.Domain.Entities.Asset", "Asset")
                         .WithMany()
-                        .HasForeignKey("AssetId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("AssetId");
 
                     b.Navigation("Asset");
                 });
