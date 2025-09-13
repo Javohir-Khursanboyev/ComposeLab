@@ -6,8 +6,8 @@ services:
       context: .
       dockerfile: Api/Dockerfile
     ports:
-     - "5192:5192"
-     - "7085:7085" 
+     - "5000:5000"
+     - "5001:5001" 
 
   database:
     image: postgres:latest
@@ -17,9 +17,22 @@ services:
         POSTGRES_USER: postgres
         POSTGRES_PASSWORD: root
     volumes:
-     - db_data:/var/lib/postgresql/data
+     - ./containers/composelab-db:/var/lib/postgresql/data
     ports:
       - "5432:5432"
 
-volumes:   
-  db_data:
+  cashe:
+    image: redis:latest
+    container_name: composeLab_cashe
+    restart: always
+    ports:
+      - "6379:6379"
+
+  blob-storage:
+    image : mcr.microsoft.com/azure-storage/azurite:latest
+    container_name: composeLab_blob-storage
+    volumes:
+      - ./.containers/blob_storage:/data
+    ports:
+      - "10000:10000"
+    command: "azurite-blob --blobHost 0.0.0.0"
