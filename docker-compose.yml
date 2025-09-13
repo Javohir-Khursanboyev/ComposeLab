@@ -1,0 +1,38 @@
+services:
+  api:
+    image: ${DOCKER_REGISTRY-}api
+    container_name: composeLab_api
+    build:
+      context: .
+      dockerfile: Api/Dockerfile
+    ports:
+     - "5000:5000"
+     - "5001:5001" 
+
+  database:
+    image: postgres:latest
+    container_name: composeLab_database
+    environment:
+        POSTGRES_DB: composelab
+        POSTGRES_USER: postgres
+        POSTGRES_PASSWORD: root
+    volumes:
+     - ./containers/composelab-db:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  cashe:
+    image: redis:latest
+    container_name: composeLab_cashe
+    restart: always
+    ports:
+      - "6379:6379"
+
+  blob-storage:
+    image : mcr.microsoft.com/azure-storage/azurite:latest
+    container_name: composeLab_blob-storage
+    volumes:
+      - ./.containers/blob_storage:/data
+    ports:
+      - "10000:10000"
+    command: "azurite-blob --blobHost 0.0.0.0"
