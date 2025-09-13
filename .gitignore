@@ -3,8 +3,18 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
-/containers/*
-!/containers/.gitkeep
+# Docker
+.docker
+.docker-compose.override.yml
+docker-compose.override.yml
+
+# Local containers data
+.containers/
+containers/
+
+# Docker volumes
+*/volumes/
+*/data/
 
 # User-specific files
 *.rsuser
