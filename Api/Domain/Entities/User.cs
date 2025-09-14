@@ -25,9 +25,10 @@ public sealed class User : BaseModel
     {
         return new UserView
         {
+            Id = user.Id,
             Name = user.Name,
             Email = user.Email,
-            AssetView = Asset.View(user.Asset)
+           // AssetView = Asset.View(user.Asset) ?? null!
         };
     }
 }
