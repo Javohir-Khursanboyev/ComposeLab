@@ -28,7 +28,7 @@ public sealed class User : BaseModel
             Id = user.Id,
             Name = user.Name,
             Email = user.Email,
-           // AssetView = Asset.View(user.Asset) ?? null!
+            AssetView = user.Asset != null ? Asset.View(user.Asset) : null
         };
     }
 }

@@ -9,8 +9,11 @@
 docker-compose.override.yml
 
 # Local containers data
+containers/composelab-db/
 .containers/
 containers/
+
+
 
 # Docker volumes
 */volumes/
