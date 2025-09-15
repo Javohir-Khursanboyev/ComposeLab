@@ -1,5 +1,5 @@
-﻿using Api.Services;
-using Api.RequestViews;
+﻿using Api.RequestViews;
+using Api.Services.Users;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers;
@@ -23,5 +23,12 @@ public class UserController(IUserService userService) : ControllerBase
         var user = await userService.GetByIdAsync(id);
 
         return ApiResponse.Success(user);
+    }
+
+    [HttpPost("{id:int}/image")]
+    public async Task<ApiResponse> UploadImageAsync([FromRoute] int id, [FromForm] CreateAssetRequest request)
+    {
+        await userService.UploadImageAsync(id, request);
+        return ApiResponse.Ok();
     }
 }

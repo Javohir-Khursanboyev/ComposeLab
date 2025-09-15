@@ -25,9 +25,21 @@ public sealed class User : BaseModel
     {
         return new UserView
         {
+            Id = user.Id,
             Name = user.Name,
             Email = user.Email,
-            AssetView = Asset.View(user.Asset)
+            AssetView = user.Asset != null ? Asset.View(user.Asset) : null
         };
+    }
+
+    public static User UploadImage(User user, string relativePath)
+    {
+        user.Asset = new Asset()
+        {
+            Path = relativePath,
+            FileType = Enums.FileTye.Image
+        }; ;
+
+        return user;
     }
 }

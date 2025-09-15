@@ -12,8 +12,14 @@ public sealed class UserRepository(DataContext context) : IUserRepository
         await context.SaveChangesAsync();
     }
 
+    public async Task UpdateAsync(User user)
+    {
+        context.Users.Update(user);
+        await context.SaveChangesAsync();
+    }
+
     public Task<User?> GetByIdAsync(int id)
     {
-        return context.Users.FirstOrDefaultAsync(u => u.Id == id);  
+        return context.Users.Include(u => u.Asset).FirstOrDefaultAsync(u => u.Id == id);  
     }
 }
