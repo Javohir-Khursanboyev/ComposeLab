@@ -2,6 +2,6 @@
 
 public interface IBlobService
 {
-    Task<string> UploadAsync(Stream fileStream, string fileName, string containerName);
+    Task UploadAsync(Stream fileStream, string fileName, string containerName, string contentType);
     Task DeleteAsync(string blobName, string containerName);
 }

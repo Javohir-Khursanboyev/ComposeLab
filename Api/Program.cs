@@ -1,7 +1,10 @@
 using Api.Data;
 using Api.Extensions;
 using Api.Repositories;
-using Api.Services;
+using Api.Services.Files;
+using Api.Services.Users;
+using Api.Storage;
+using Azure.Storage.Blobs;
 using Microsoft.EntityFrameworkCore;
 using StackExchange.Redis;
 
@@ -20,6 +23,10 @@ builder.Services.AddSingleton<IConnectionMultiplexer>(sp => ConnectionMultiplexe
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IFileService, FileService>();   
+builder.Services.AddSingleton<IBlobService, BlobService>();
+builder.Services.AddSingleton(_ => new BlobServiceClient(builder.Configuration.GetConnectionString("AzureBlobStorage")));
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
