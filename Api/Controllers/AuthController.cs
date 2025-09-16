@@ -15,4 +15,12 @@ public class AuthController(IAuthService authService) : ControllerBase
 
         return ApiResponse.Success(response);
     }
+
+    [HttpPost("refresh-token")]
+    public async Task<ApiResponse> RefreshTokenAsync([FromBody] RefreshTokenRequest request)
+    {
+        var response = await authService.RefreshTokenAsync(request);
+
+        return ApiResponse.Success(response);
+    }
 }
