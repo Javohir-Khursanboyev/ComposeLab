@@ -22,4 +22,9 @@ public sealed class UserRepository(DataContext context) : IUserRepository
     {
         return context.Users.Include(u => u.Asset).FirstOrDefaultAsync(u => u.Id == id);  
     }
+
+    public Task<User?> GetByEmailAsync(string email)
+    {
+        return context.Users.FirstOrDefaultAsync(u => u.Email.ToLower() == email.ToLower());
+    }
 }

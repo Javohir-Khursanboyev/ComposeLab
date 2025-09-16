@@ -1,9 +1,10 @@
 using Api.Data;
 using Api.Extensions;
 using Api.Repositories;
+using Api.Services.Auth;
 using Api.Services.Files;
+using Api.Services.Storage;
 using Api.Services.Users;
-using Api.Storage;
 using Azure.Storage.Blobs;
 using Microsoft.EntityFrameworkCore;
 using StackExchange.Redis;
@@ -26,6 +27,7 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IFileService, FileService>();   
 builder.Services.AddSingleton<IBlobService, BlobService>();
 builder.Services.AddSingleton(_ => new BlobServiceClient(builder.Configuration.GetConnectionString("AzureBlobStorage")));
+builder.Services.AddScoped<IAuthService, AuthService>();
 
 var app = builder.Build();
 

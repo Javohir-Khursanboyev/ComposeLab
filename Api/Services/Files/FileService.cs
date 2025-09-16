@@ -1,4 +1,4 @@
-﻿using Api.Storage;
+﻿using Api.Services.Storage;
 
 namespace Api.Services.Files;
 
