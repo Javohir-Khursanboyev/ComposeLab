@@ -1,9 +1,11 @@
 using Api.Data;
 using Api.Extensions;
 using Api.Repositories;
+using Api.Services.Auth;
 using Api.Services.Files;
+using Api.Services.Redis;
+using Api.Services.Storage;
 using Api.Services.Users;
-using Api.Storage;
 using Azure.Storage.Blobs;
 using Microsoft.EntityFrameworkCore;
 using StackExchange.Redis;
@@ -19,13 +21,24 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddOpenApi();
 builder.Services.AddDbContext<DataContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddSingleton<IConnectionMultiplexer>(sp => ConnectionMultiplexer.Connect(builder.Configuration.GetConnectionString("Cashe") ?? "localhost:6379"));
+builder.Services.AddSingleton(_ => new BlobServiceClient(builder.Configuration.GetConnectionString("AzureBlobStorage")));
+
+builder.Services.AddSingleton<IConnectionMultiplexer>(sp =>
+    ConnectionMultiplexer.Connect(builder.Configuration.GetConnectionString("Redis")!)
+);
+
+builder.Services.AddScoped<IDatabase>(sp =>
+{
+    var multiplexer = sp.GetRequiredService<IConnectionMultiplexer>();
+    return multiplexer.GetDatabase();
+});
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IFileService, FileService>();   
 builder.Services.AddSingleton<IBlobService, BlobService>();
-builder.Services.AddSingleton(_ => new BlobServiceClient(builder.Configuration.GetConnectionString("AzureBlobStorage")));
+builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IRedisService, RedisService>();
 
 var app = builder.Build();
 
